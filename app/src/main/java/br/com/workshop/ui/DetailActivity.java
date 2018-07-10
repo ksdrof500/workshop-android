@@ -9,8 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import br.com.workshop.R;
+import br.com.workshop.model.Talks;
 
 public class DetailActivity extends AppCompatActivity {
+
+    private Talks talk;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -21,6 +24,10 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        Bundle bundle = getIntent().getExtras();
+
+       talk = (Talks) bundle.getSerializable("talk");
+
     }
 
 }

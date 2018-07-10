@@ -1,5 +1,6 @@
 package br.com.workshop.ui;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import br.com.workshop.MainApplication;
 import br.com.workshop.R;
-import br.com.workshop.dummy.DummyContent;
 import br.com.workshop.model.DataBase;
 import br.com.workshop.model.Talks;
 import br.com.workshop.model.TalksSQL;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         EventsFragment.OnListFragmentInteractionListener {
 
     private int selectedItem;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigateTo(R.id.nav_home);
+        dialog = ProgressDialog.show(this, "",
+                "Buscando talks ...", true);
         APIManager.getAppService().getTalks().enqueue(mtalks);
     }
 
@@ -140,17 +143,24 @@ public class MainActivity extends AppCompatActivity
 
                     db.insertWithOnConflict(TalksSQL.TalksEntry.TALKS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 }
+
+                db.close();
             }
+            dialog.dismiss();
         }
 
         @Override
         public void onFailure(Call<List<Talks>> call, Throwable t) {
-
+            dialog.dismiss();
         }
     };
 
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Talks talk) {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        startActivity(new Intent(this, DetailActivity.class));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("talk", talk);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

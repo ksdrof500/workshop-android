@@ -1,6 +1,8 @@
 package br.com.workshop.ui;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,9 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.workshop.R;
-import br.com.workshop.dummy.DummyContent;
-import br.com.workshop.dummy.DummyContent.DummyItem;
+
+import br.com.workshop.model.DataBase;
+import br.com.workshop.model.Talks;
 
 /**
  * A fragment representing a list of Items.
@@ -23,20 +29,13 @@ import br.com.workshop.dummy.DummyContent.DummyItem;
  */
 public class EventsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public EventsFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static EventsFragment newInstance(int columnCount) {
         EventsFragment fragment = new EventsFragment();
@@ -60,19 +59,25 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                RecyclerView.LayoutManager horizontalManager = new LinearLayoutManager(getContext(),
-                        OrientationHelper.VERTICAL, false);
-                recyclerView.setLayoutManager(horizontalManager);
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyEventsRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+        RecyclerView recyclerView = (RecyclerView) view;
+        RecyclerView.LayoutManager horizontalManager = new LinearLayoutManager(getContext(),
+                OrientationHelper.VERTICAL, false);
+        recyclerView.setLayoutManager(horizontalManager);
+
+        SQLiteDatabase db = new DataBase(getActivity()).getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT name, description, image FROM talks", null);
+        List<Talks> talks = new ArrayList<>();
+
+        while(cursor.moveToNext()) {
+         talks.add(new Talks(cursor.getString(0),
+                 cursor.getString(1),
+                 cursor.getString(2)));
         }
+
+        db.close();
+
+        recyclerView.setAdapter(new MyEventsRecyclerViewAdapter(talks, mListener));
         return view;
     }
 
@@ -106,6 +111,6 @@ public class EventsFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Talks item);
     }
 }
