@@ -6,4 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="send_to">Selecione sua aplicação de e-mail</string>
+    <string name="version">Versão do app : %s</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>
