@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -62,11 +63,13 @@ public class EventsFragment extends Fragment {
                 OrientationHelper.VERTICAL, false);
         recyclerView.setLayoutManager(verticalManager);
 
-        RecyclerView recyclerViewBanner = view.findViewById(R.id.banner);
+//        RecyclerView recyclerViewBanner = view.findViewById(R.id.banner);
+//        RecyclerView.LayoutManager horizontalManager = new LinearLayoutManager(getContext(),
+//                OrientationHelper.HORIZONTAL, false);
+//        recyclerViewBanner.setLayoutManager(horizontalManager);
 
-        RecyclerView.LayoutManager horizontalManager = new LinearLayoutManager(getContext(),
-                OrientationHelper.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalManager);
+        ViewPager viewPager = view.findViewById(R.id.banner);
+
 
         SQLiteDatabase db = new DataBase(getActivity()).getWritableDatabase();
 
@@ -82,7 +85,10 @@ public class EventsFragment extends Fragment {
         db.close();
 
         recyclerView.setAdapter(new MyEventsRecyclerViewAdapter(talks, mListener));
-        recyclerViewBanner.setAdapter(new MyEventsRecyclerViewAdapter(talks, mListener));
+
+        CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity(), talks);
+
+        viewPager.setAdapter(customPagerAdapter);
 
         return view;
     }
