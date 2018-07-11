@@ -9,4 +9,6 @@
     <string name="send_to">Selecione sua aplicação de e-mail</string>
     <string name="version">Versão do app : %s</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="social">SOCIAL</string>
+
 </resources>

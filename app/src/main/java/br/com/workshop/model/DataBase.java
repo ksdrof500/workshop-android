@@ -11,8 +11,7 @@ public class DataBase extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TalksSQL.TalksEntry.TALKS + " (" +
-                    TalksSQL.TalksEntry._ID + " INTEGER PRIMARY KEY," +
-                    TalksSQL.TalksEntry.COLUMN_NAME + " TEXT," +
+                    TalksSQL.TalksEntry.COLUMN_NAME + " TEXT  PRIMARY KEY," +
                     TalksSQL.TalksEntry.COLUMN_DESCRIPTION + " TEXT," +
                     TalksSQL.TalksEntry.COLUMN_IMAGE + " TEXT)";
 

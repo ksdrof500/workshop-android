@@ -20,13 +20,11 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import br.com.workshop.MainApplication;
 import br.com.workshop.R;
 import br.com.workshop.model.DataBase;
 import br.com.workshop.model.Talks;
 import br.com.workshop.model.TalksSQL;
 import br.com.workshop.network.APIManager;
-import br.com.workshop.network.AppService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,9 +51,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigateTo(R.id.nav_home);
+
         dialog = ProgressDialog.show(this, "",
                 "Buscando talks ...", true);
+
         APIManager.getAppService().getTalks().enqueue(mtalks);
     }
 
@@ -147,6 +146,7 @@ public class MainActivity extends AppCompatActivity
                 db.close();
             }
             dialog.dismiss();
+            navigateTo(R.id.nav_home);
         }
 
         @Override

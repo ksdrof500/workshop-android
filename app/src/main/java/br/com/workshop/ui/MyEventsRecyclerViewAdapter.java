@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 import br.com.workshop.R;
 import br.com.workshop.model.Talks;
 import br.com.workshop.ui.EventsFragment.OnListFragmentInteractionListener;
-
-import java.util.List;
 
 
 public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRecyclerViewAdapter.ViewHolder> {
@@ -44,8 +44,6 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }

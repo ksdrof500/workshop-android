@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.workshop.R;
-
 import br.com.workshop.model.DataBase;
 import br.com.workshop.model.Talks;
 
@@ -59,9 +57,15 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view;
-        RecyclerView.LayoutManager horizontalManager = new LinearLayoutManager(getContext(),
+        RecyclerView recyclerView = view.findViewById(R.id.list);
+        RecyclerView.LayoutManager verticalManager = new LinearLayoutManager(getContext(),
                 OrientationHelper.VERTICAL, false);
+        recyclerView.setLayoutManager(verticalManager);
+
+        RecyclerView recyclerViewBanner = view.findViewById(R.id.banner);
+
+        RecyclerView.LayoutManager horizontalManager = new LinearLayoutManager(getContext(),
+                OrientationHelper.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalManager);
 
         SQLiteDatabase db = new DataBase(getActivity()).getWritableDatabase();
@@ -78,6 +82,8 @@ public class EventsFragment extends Fragment {
         db.close();
 
         recyclerView.setAdapter(new MyEventsRecyclerViewAdapter(talks, mListener));
+        recyclerViewBanner.setAdapter(new MyEventsRecyclerViewAdapter(talks, mListener));
+
         return view;
     }
 
